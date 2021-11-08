@@ -3,3 +3,17 @@ body {
   overflow: hidden !important;
   font-family: "Red Hat Display", sans-serif !important;
 }
+
+/** Form */
+#tm-form {
+  display: none;
+}
+
+/** Table */
+.tm-bgGreen {
+  color: green !important;
+}
+
+.tm-bgRed {
+  color: red !important;
+}

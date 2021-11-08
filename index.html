@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="styles/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-  <title>Token Monitor</title>
+  <title>Brazilian Token Monitor</title>
 </head>
 <body>
   <div class="container-fluid">
@@ -16,32 +16,35 @@
         <img src="assets/icon.png" alt="Token Monitor" width="50">
       </div>
       <div class="p-2 bd-highlight pt-3">
-        <strong>Token Monitor</strong>
+        <h2>Brazilian Token Monitor</h2>
       </div>
-      <div class="p-2 bd-highlight">
-        <a href="#" class="btn btn-primary" id="tm-newToken">New</a>
+      <div class="p-2 bd-highlight pt-3">
+        <a href="#" class="btn btn-primary" id="btm-newToken">New</a>
       </div>
     </div>
     
     <div class="alert alert-primary" role="alert">
-      USD➝BRL <strong>R$ <span id="tm-dollarValue">0,00</span></strong> last updated <strong id="tm-dollarDate"></strong>
+      USD➝BRL <strong>R$ <span id="btm-dollarValue">0,00</span></strong><br /> 
+      Last updated <strong id="btm-dollarDate"></strong>
     </div>
 
-    <form id="tm-form">
+    <form id="btm-form">
       <div class="row">
-        <div class="col-4">
+        <div class="col-12">
           <div class="form-group">
-            <label for="exampleInputEmail1">Token</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+            <label for="btm-formToken">Token</label>
+            <input type="text" class="form-control" id="btm-formToken" placeholder="Token Address">
           </div>
         </div>
-        <div class="col-4">
+      </div>
+      <div class="row">
+        <div class="col-6">
           <div class="form-group">
             <label for="exampleInputEmail1">Amount</label>
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-6">
           <div class="form-group">
             <label for="exampleInputEmail1">Purchase Price</label>
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
@@ -50,12 +53,13 @@
       </div>
       <div class="d-flex flex-row-reverse">      
         <div class="p-2">
-          <button type="submit" class="btn btn-primary">Salvar</button>
+          <a href="#" class="btn btn-danger">Cancel</a>
+          <button type="submit" class="btn btn-primary" id="btm-formSave">Save</button>
         </div>
       </div>
     </form>
     
-    <table class="table table-striped" id="tm-table">
+    <table class="table table-striped" id="btm-table">
       <thead>
         <tr>
           <th scope="col">Name</th>
@@ -66,12 +70,12 @@
           <th scope="col">Profit</th>
         </tr>
       </thead>
-      <tbody id="tm-tableBody">
+      <tbody id="btm-tableBody">
       </tbody>
     </table>
 
     <footer class="p-2">
-      Powered by <a href="https://github.com/binascohub">Fernando Binasco</a>
+      Powered by <a href="https://github.com/binascohub" target="_blank">Fernando Binasco</a>
     </footer>
   </div>
 

@@ -1,17 +1,17 @@
 {
   "manifest_version":3,
-  "name":"Token Monitor",
-  "description":"Monitore o valor de tokens. Tokens listados na Poocoin",
+  "name":"Brazilian Token Monitor",
+  "description":"Monitor the value of tokens and see your profit or loss.",
   "version":"0.0.1",
   "action":{
     "default_icon":"assets/icon.png",
     "default_popup":"index.html"
   },
   "permissions":[
-    "tabs",
     "storage"
   ],
   "host_permissions":[
-    "https://poocoin.app/"
+    "https://api.pancakeswap.info/",
+    "https://olinda.bcb.gov.br/"
   ]
 }

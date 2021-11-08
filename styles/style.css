@@ -5,15 +5,15 @@ body {
 }
 
 /** Form */
-#tm-form {
+#btm-form {
   display: none;
 }
 
 /** Table */
-.tm-bgGreen {
+.btm-bgGreen {
   color: green !important;
 }
 
-.tm-bgRed {
+.btm-bgRed {
   color: red !important;
 }

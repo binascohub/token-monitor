@@ -6,13 +6,6 @@ $(function() {
   let day = now.getDate();
       day = ( day < 10 ? '0' : '' ) + day;
   let year = now.getFullYear();
-  let hours = now.getHours();
-      hours = ( hours < 10 ? '0' : '' ) + hours;
-  let minutes = now.getMinutes();
-      minutes = ( minutes < 10 ? '0' : '' ) + minutes;
-  let seconds = now.getSeconds();
-      seconds = ( seconds < 10 ? '0' : '' ) + seconds;
-  let date = day + '/' + month + '/' + year +' '+ hours + ':' + minutes + ':' + seconds;
   
   let urlDollar = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='"+month+"-"+day+"-"+year+"'&$format=json";
     
@@ -21,13 +14,22 @@ $(function() {
       let dollar = dataDollar.value[0].cotacaoCompra;
       let urlPancakeswap = 'https://api.pancakeswap.info/api/v2/tokens/';
 
-      $('#tm-dollarValue').text(dollar);
-      $('#tm-dollarDate').text(date);
+      $('#btm-dollarValue').text(dollar);
+      $('#btm-dollarDate').text(now);
 
-      // pegando valor do token poocoin
+
+      chrome.storage.sync.get(['BTM_STORAGE_KEY'], function(result) {
+        if (result['BTM_STORAGE_KEY'] != undefined) {
+          let data = JSON.parse(result['BTM_STORAGE_KEY']);
+       //   alert('Value currently is ' + data.token);
+        }
+      });
+
+
+      // pegando valor do token
       let token = '0x727b531038198e27a1a4d0fd83e1693c1da94892';
       
-      let purchasePrice = 2;
+      let purchasePrice = 0.10;
       let amount = 10;
 
       $.get(urlPancakeswap+token, function(dataToken, statusToken){
@@ -39,7 +41,7 @@ $(function() {
               profit *=amount;
               profit = profit.toFixed(2);
 
-          let tmProfitClass = (profit > 0) ? 'tm-bgGreen':'tm-bgRed';
+          let tmProfitClass = (profit > 0) ? 'btm-bgGreen':'btm-bgRed';
 
           let tmAppend =  '<tr>'+
                             '<th scope="row">'+dataToken.data.name+'</th>'+
@@ -50,15 +52,31 @@ $(function() {
                             '<td class="'+tmProfitClass+'">'+profit+'</td>'+
                             '<td><a href="#">Remove</a></td>'+
                           '</tr>';
-          $('#tm-tableBody').append(tmAppend);
+          $('#btm-tableBody').append(tmAppend);
         }
       });
     }
   });
   
-  $('#tm-newToken').click(function(){
-    $('#tm-table').hide();
-    $('#tm-form').show();
+  /** Form */
+  $('#btm-newToken').click(function(){
+    $('#btm-table').hide();
+    $('#btm-form').show();
+    return false;
+  });
+
+  $('#btm-formSave').click(function(){
+    let dictionary = {
+      'token': $('#btm-formToken').val()
+    };
+
+    dictionary = JSON.stringify(dictionary);
+
+    chrome.storage.sync.set({ "BTM_STORAGE_KEY": dictionary }, function () {
+      $('#btm-form').hide();
+      $('#btm-table').show();
+    });
+
     return false;
   });
 

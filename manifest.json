@@ -1,6 +1,6 @@
 {
   "manifest_version":3,
-  "name":"Brazilian Token Monitor",
+  "name":"Binasco Token Monitor",
   "description":"Monitor the value of tokens and see your profit or loss.",
   "version":"0.0.1",
   "action":{

@@ -49,6 +49,9 @@ $(function() {
     } 
   });
 
+  /** Form Input Mask */
+  $('#btm-form-purchase-price').maskMoney();
+
   /** Table list actions */
   $.subscribe('/table/loaded', function(e, data) {
     $('.btm-table-clear').on('click',function(){
@@ -56,6 +59,7 @@ $(function() {
       return false;
     });
   });
+
 });
 
 /** Load table data */
@@ -67,12 +71,17 @@ function btmRender(){
   $('#btm-dollarDate').text(btmDataDollar.value[0].dataHoraCotacao);
 
   chrome.storage.sync.get( function(items) {
-    $('#btm-tableBody').html('');
+    $('#btm-tableBody').html('No Data');
     $.each(items, function(index, value){
+
       let btmLine = JSON.parse(value);
+      
       let btmUrlPancakeswap = 'https://api.pancakeswap.info/api/v2/tokens/';
+
         $.get(btmUrlPancakeswap+btmLine.token, function(dataToken, statusToken){
+          
           if(statusToken=='success'){
+
             let btmActualPrice = dataToken.data.price*btmDollar;
                 btmActualPrice = btmActualPrice.toFixed(2);
 
@@ -91,26 +100,26 @@ function btmRender(){
                               '<td class="'+btmProfitClass+'">'+btmProfit+'</td>'+
                               '<td><a href="#" id="'+index+'" class="btm-table-clear">Clear</a></td>'+
                             '</tr>';
+            
             $('#btm-tableBody').html(
               $('#btm-tableBody').html()+btmAppend
             );
+            
             $.publish('/table/loaded');
           }
         });
     });
-    
   });
 }
-
 
 /** Save form data in chrome storage */
 function btmSave(){
   let timestamp = $.now();
 
   let dictionary = JSON.stringify({
-        'token': $('#btm-formToken').val(),
-        'amount': $('#btm-formAmount').val(),
-        'purchasePrice': $('#btm-formPurchasePrice').val(),
+        'token': $('#btm-form-token').val(),
+        'amount': $('#btm-form-amount').val(),
+        'purchasePrice': $('#btm-form-purchase-price').val()
       });
 
   let save = {};

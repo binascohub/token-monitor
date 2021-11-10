@@ -17,3 +17,9 @@ body {
 .btm-bgRed {
   color: red !important;
 }
+
+/** Footer */
+footer {
+  background-color: rgb(231, 231, 231);
+  border-radius: 5px 5px 0 0;
+}

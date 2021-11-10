@@ -1,0 +1,8 @@
+{
+  "name": "bower-rails generated vendor assets",
+  "dependencies": {
+    "jquery": "^3.6.0",
+    "bootstrap": "^5.1.3",
+    "jquery-tiny-pubsub": "^0.7.0"
+  }
+}

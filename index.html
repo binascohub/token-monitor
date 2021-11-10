@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   <title>Binasco Token Monitor</title>
 </head>
 <body>
@@ -76,12 +76,19 @@
     </table>
 
     <footer class="p-2">
-      Powered by <a href="https://github.com/binascohub" target="_blank">Fernando Binasco</a>
+      <div class="d-flex bd-highlight">
+        <div class="flex-grow-1 bd-highlight">
+          <a href="#" class="btn btn-outline-danger" id="btm-form-clear-all">Clear All</a>
+        </div>
+        <div class="pt-1 bd-highlight">
+          Powered by <a href="https://github.com/binascohub" target="_blank">Fernando Binasco</a>
+        </div>
+      </div>
     </footer>
   </div>
-
-  <script src="node_modules/jquery/dist/jquery.min.js"></script>
-  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="bower_components/jquery-tiny-pubsub/dist/ba-tiny-pubsub.min.js"></script>
   <script src="scripts/script.js"></script>
 </body>
 </html>

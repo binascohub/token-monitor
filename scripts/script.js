@@ -1,25 +1,14 @@
-let btmDataDollar = 0;
+let btmBnbBrlPrice = 0.00;
 
 $(function() {
 
-  let btmNow = new Date();
-  let btmMonth = btmNow.getMonth() + 1; btmMonth = ( btmMonth < 10 ? '0' : '' ) + btmMonth;
-  let btmDay = btmNow.getDate(); btmDay = ( btmDay < 10 ? '0' : '' ) + btmDay;
-  let btmYesterday = btmNow.getDate()-1; btmYesterday = ( btmYesterday < 10 ? '0' : '' ) + btmYesterday;
-  let btmYear = btmNow.getFullYear();
-  let btmUrlDollar = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='";
-  // get dollar data
-  $.get(btmUrlDollar+btmMonth+"-"+btmDay+"-"+btmYear+"'&$format=json", function(dataDollar, statusDollar){
-    if(dataDollar.value[0]!=undefined && statusDollar=='success'){
-      btmDataDollar = dataDollar;
+  // get Bnb data
+  let btmUrlBnb = "https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL";
+
+  $.get(btmUrlBnb, function(dataBnb, statusBnb){
+    if(statusBnb=='success'){
+      btmBnbBrlPrice = parseFloat(dataBnb.price).toFixed(2);
       btmRender();
-    }else{
-      $.get(btmUrlDollar+btmMonth+"-"+btmYesterday+"-"+btmYear+"'&$format=json", function(dataDollar, statusDollar){
-        if(dataDollar.value[0]!=undefined && statusDollar=='success'){    
-          btmDataDollar = dataDollar;
-          btmRender();
-        }
-      });
     }
   });
   
@@ -64,50 +53,49 @@ $(function() {
 
 /** Load table data */
 function btmRender(){
-  
-  let btmDollar = btmDataDollar.value[0].cotacaoCompra;
-  
-  $('#btm-dollarValue').text(btmDollar);
-  $('#btm-dollarDate').text(btmDataDollar.value[0].dataHoraCotacao);
+
+  $('#btm-bnb-value').text(btmBnbBrlPrice);
 
   chrome.storage.sync.get( function(items) {
-    $('#btm-tableBody').html('No Data');
+
+    $('#btm-table-body').html('No Data');
+    
     $.each(items, function(index, value){
 
       let btmLine = JSON.parse(value);
-      
       let btmUrlPancakeswap = 'https://api.pancakeswap.info/api/v2/tokens/';
 
-        $.get(btmUrlPancakeswap+btmLine.token, function(dataToken, statusToken){
+      $.get(btmUrlPancakeswap+btmLine.token, function(dataToken, statusToken){
+        
+        
+        if(statusToken=='success'){
           
-          if(statusToken=='success'){
+          let btmActualPrice = dataToken.data.price_BNB*btmBnbBrlPrice;
+              btmActualPrice = btmActualPrice.toFixed(2);
 
-            let btmActualPrice = dataToken.data.price*btmDollar;
-                btmActualPrice = btmActualPrice.toFixed(2);
+          let btmProfit = btmActualPrice-btmLine.purchasePrice;
+              btmProfit *= btmLine.amount;
+              btmProfit = btmProfit.toFixed(2);
 
-            let btmProfit = btmActualPrice-btmLine.purchasePrice;
-                btmProfit *= btmLine.amount;
-                btmProfit = btmProfit.toFixed(2);
+          let btmProfitClass = (btmProfit > 0) ? 'btm-bgGreen':'btm-bgRed';
 
-            let btmProfitClass = (btmProfit > 0) ? 'btm-bgGreen':'btm-bgRed';
+          let btmAppend =  '<tr>'+
+                            '<th scope="row">'+dataToken.data.name+'</th>'+
+                            '<td>'+dataToken.data.symbol+'</td>'+
+                            '<td>'+btmLine.amount+'</td>'+
+                            '<td>'+btmLine.purchasePrice+'</td>'+
+                            '<td>'+btmActualPrice+'</td>'+
+                            '<td class="'+btmProfitClass+'">'+btmProfit+'</td>'+
+                            '<td><a href="#" id="'+index+'" class="btm-table-clear">Clear</a></td>'+
+                          '</tr>';
 
-            let btmAppend =  '<tr>'+
-                              '<th scope="row">'+dataToken.data.name+'</th>'+
-                              '<td>'+dataToken.data.symbol+'</td>'+
-                              '<td>'+btmLine.amount+'</td>'+
-                              '<td>'+btmLine.purchasePrice+'</td>'+
-                              '<td>'+btmActualPrice+'</td>'+
-                              '<td class="'+btmProfitClass+'">'+btmProfit+'</td>'+
-                              '<td><a href="#" id="'+index+'" class="btm-table-clear">Clear</a></td>'+
-                            '</tr>';
-            
-            $('#btm-tableBody').html(
-              $('#btm-tableBody').html()+btmAppend
-            );
-            
-            $.publish('/table/loaded');
-          }
-        });
+          $('#btm-table-body').html(
+            $('#btm-table-body').html()+btmAppend
+          );
+          
+          $.publish('/table/loaded');
+        }
+      });
     });
   });
 }
